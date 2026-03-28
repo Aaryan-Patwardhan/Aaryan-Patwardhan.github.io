@@ -14,7 +14,7 @@ export default function Hero() {
   const tier = useDeviceTier()
 
   return (
-    <section id="hero" className="relative h-screen flex items-center overflow-hidden">
+    <section id="hero" className="relative min-h-screen flex items-center overflow-hidden">
       {/* Ambient particle field — always visible, behind everything */}
       <div className="absolute inset-0">
         <AmbientBackground />
@@ -33,10 +33,11 @@ export default function Hero() {
       <div className="absolute inset-0 bg-gradient-to-r from-[var(--bg)] via-[var(--bg)]/60 to-transparent pointer-events-none" />
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 w-full">
+        {/* LCP-critical text: animates immediately, not blocked by canvas */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.0, delay: 0.2 }}
+          transition={{ duration: 0.3, delay: 0 }}
         >
           <p className="font-mono text-xs text-[var(--accent)] tracking-widest mb-4 uppercase">
             AI Systems Engineer

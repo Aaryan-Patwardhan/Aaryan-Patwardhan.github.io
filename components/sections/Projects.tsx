@@ -24,16 +24,15 @@ export default function Projects() {
         </h2>
         <FilterBar active={activeTag} onChange={setActiveTag} />
       </div>
-      <AnimatePresence mode="popLayout">
+      <AnimatePresence mode="sync">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
           {filtered.map(project => (
             <motion.div
               key={project.id}
-              layout
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.96 }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: 0.15 }}
             >
               <ProjectCard project={project} />
             </motion.div>
