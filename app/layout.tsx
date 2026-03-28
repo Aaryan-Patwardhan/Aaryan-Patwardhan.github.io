@@ -34,7 +34,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${geistMono.variable}`}>
-      <head>{process.env.NEXT_PUBLIC_UMAMI_ID ? <script defer src="https://analytics.umami.is/script.js" data-website-id={process.env.NEXT_PUBLIC_UMAMI_ID} /> : null}</head>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {process.env.NEXT_PUBLIC_UMAMI_ID ? <script defer src="https://analytics.umami.is/script.js" data-website-id={process.env.NEXT_PUBLIC_UMAMI_ID} /> : null}
+      </head>
       <body className="bg-[var(--bg)] text-[var(--text-primary)] antialiased overflow-x-hidden">
         {children}
       </body>

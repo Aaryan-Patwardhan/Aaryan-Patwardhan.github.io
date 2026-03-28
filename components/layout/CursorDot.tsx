@@ -2,9 +2,8 @@
 import { useEffect, useRef, useState } from 'react'
 
 export default function CursorDot() {
-  const [isPointerFine, setIsPointerFine] = useState(false)
-  const [isHovering, setIsHovering] = useState(false)
   const dotRef = useRef<HTMLDivElement>(null)
+  const [isPointerFine, setIsPointerFine] = useState(false)
 
   useEffect(() => {
     setIsPointerFine(window.matchMedia('(pointer: fine)').matches)
@@ -13,22 +12,40 @@ export default function CursorDot() {
   useEffect(() => {
     if (!isPointerFine) return
 
-    // Direct assignment in mousemove — fastest possible DOM update
+    let x = -100, y = -100
+    let hovering = false
+    let rafId: number
+
     const onMove = (e: MouseEvent) => {
-      // Use translate3d to force GPU compositing on its own layer
-      dotRef.current!.style.transform = `translate3d(${e.clientX}px,${e.clientY}px,0)`
+      x = e.clientX
+      y = e.clientY
     }
 
     const onOver = (e: MouseEvent) => {
       const el = e.target as HTMLElement
-      setIsHovering(!!(el.closest('a,button,[role="button"]')))
+      hovering = !!(el.closest('a,button,[role="button"]'))
+    }
+
+    const tick = () => {
+      const el = dotRef.current
+      if (el) {
+        const size   = hovering ? 20 : 10
+        const offset = size / 2
+        el.style.transform = `translate3d(${x - offset}px,${y - offset}px,0)`
+        el.style.width      = `${size}px`
+        el.style.height     = `${size}px`
+      }
+      rafId = requestAnimationFrame(tick)
     }
 
     window.addEventListener('mousemove', onMove, { passive: true })
     window.addEventListener('mouseover', onOver, { passive: true })
+    rafId = requestAnimationFrame(tick)
+
     return () => {
       window.removeEventListener('mousemove', onMove)
       window.removeEventListener('mouseover', onOver)
+      cancelAnimationFrame(rafId)
     }
   }, [isPointerFine])
 
@@ -41,23 +58,17 @@ export default function CursorDot() {
         position: 'fixed',
         top: 0,
         left: 0,
-        // Offset so dot is centred on pointer tip
-        marginLeft: isHovering ? -10 : -5,
-        marginTop:  isHovering ? -10 : -5,
-        width:  isHovering ? 20 : 10,
-        height: isHovering ? 20 : 10,
+        width: 10,
+        height: 10,
         borderRadius: '50%',
-        // Solid ring style — NO mix-blend-mode so browser can GPU-layer this element
         backgroundColor: 'transparent',
         border: '2px solid #00d4ff',
         boxShadow: '0 0 6px #00d4ff88',
         pointerEvents: 'none',
         zIndex: 9999,
-        // Force own GPU compositor layer — eliminates repaint cost entirely
         willChange: 'transform',
         transform: 'translate3d(-100px,-100px,0)',
-        // Only size/border transitions, never position
-        transition: 'width 0.1s, height 0.1s, margin 0.1s',
+        transition: 'width 0.1s, height 0.1s',
       }}
     />
   )

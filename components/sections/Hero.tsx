@@ -33,9 +33,9 @@ export default function Hero() {
       <div className="absolute inset-0 bg-gradient-to-r from-[var(--bg)] via-[var(--bg)]/60 to-transparent pointer-events-none" />
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 w-full">
-        {/* LCP-critical text: animates immediately, not blocked by canvas */}
+        {/* LCP-critical text: visible on first paint, animates after hydration */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 1, y: 0 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0 }}
         >
