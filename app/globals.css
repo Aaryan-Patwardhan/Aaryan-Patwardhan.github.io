@@ -1,0 +1,43 @@
+@import "tailwindcss";
+@source "../app/**/*.{ts,tsx}";
+@source "../components/**/*.{ts,tsx}";
+@source "../lib/**/*.{ts,tsx}";
+
+:root {
+  --bg:              #050a0f;
+  --surface:         #0d1520;
+  --surface-hover:   #111e2e;
+  --border:          #1a2d40;
+  --accent:          #00d4ff;
+  --accent-glow:     #00aaff;
+  --accent-dim:      #005580;
+  --text-primary:    #e8f4f8;
+  --text-secondary:  #5a8a99;
+  --text-dim:        #2a4a5a;
+  --success:         #00ff88;
+  --error:           #ff4466;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  background-color: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+@media (pointer: fine) {
+  html {
+    cursor: none;
+  }
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent-dim); }

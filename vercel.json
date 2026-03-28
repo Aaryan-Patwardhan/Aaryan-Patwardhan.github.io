@@ -1,0 +1,10 @@
+{
+  "regions": ["sin1"],
+  "redirects": [
+    {
+      "source": "/resume",
+      "destination": "https://linkedin.com/in/aaryan-patwardhan",
+      "permanent": false
+    }
+  ]
+}
