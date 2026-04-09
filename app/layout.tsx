@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter, Geist_Mono } from 'next/font/google'
 import './globals.css'
+import CursorDot from '@/components/layout/CursorDot'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -40,6 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {process.env.NEXT_PUBLIC_UMAMI_ID ? <script defer src="https://analytics.umami.is/script.js" data-website-id={process.env.NEXT_PUBLIC_UMAMI_ID} /> : null}
       </head>
       <body className="bg-[var(--bg)] text-[var(--text-primary)] antialiased overflow-x-hidden">
+        <CursorDot />
         {children}
       </body>
     </html>

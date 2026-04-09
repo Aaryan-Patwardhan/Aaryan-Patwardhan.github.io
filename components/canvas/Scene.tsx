@@ -17,9 +17,13 @@ export default function Scene({ tier }: Props) {
 
   const canvasProps: Partial<CanvasProps> = {
     camera: { fov: 60, position: [0, 0, 8], near: 0.1, far: 100 },
-    dpr: tier === 'high' ? [1, 2] : [1, 1],
+    // Cap DPR at 1.5 even on high-tier — retina 2x doubles GPU load for negligible gain
+    dpr: [1, tier === 'low' ? 1 : 1.5],
     frameloop: reducedMotion ? 'never' : 'always',
-    performance: { min: tier === 'mid' ? 0.5 : 0.75 }
+    // Increase min performance headroom — R3F will auto-scale DPR down faster under load
+    performance: { min: 0.6 },
+    // Disable antialias — bloom makes it invisible but AA adds ~10-15% GPU cost
+    gl: { antialias: false, powerPreference: 'high-performance' },
   }
 
   return (
@@ -29,14 +33,14 @@ export default function Scene({ tier }: Props) {
           {...canvasProps}
           role="img"
           aria-label="Interactive neural network visualization representing AI system architecture"
-          className="absolute inset-0"
+          className="absolute inset-0 pointer-events-none"
         >
           <fog attach="fog" args={['#050a0f', 10, 20]} />
           <ambientLight intensity={0.2} />
           <pointLight position={[0, 0, 5]} intensity={1} color="#00d4ff" />
           <Suspense fallback={null}>
             {!reducedMotion && <NeuralNetwork />}
-            {tier === 'high' && !reducedMotion && <Effects />}
+            {tier !== 'low' && !reducedMotion && <Effects />}
           </Suspense>
         </Canvas>
       </CanvasErrorBoundary>

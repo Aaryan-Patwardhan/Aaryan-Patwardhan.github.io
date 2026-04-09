@@ -28,7 +28,7 @@ export default function NeuralNodes({ nodesRef, count }: Props) {
 
   return (
     <instancedMesh ref={meshRef} args={[undefined, undefined, count]}>
-      <sphereGeometry args={[NEURAL.NODE_SIZE, 8, 8]} />
+      <sphereGeometry args={[NEURAL.NODE_SIZE, 6, 6]} />
       <meshStandardMaterial
         color="#00d4ff"
         emissive="#00d4ff"

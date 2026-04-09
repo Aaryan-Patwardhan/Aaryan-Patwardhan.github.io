@@ -6,8 +6,7 @@ import { resume } from '@/lib/resume'
 import { useDeviceTier } from '@/hooks/useDeviceTier'
 import NeuralNetworkFallback from '@/components/canvas/NeuralNetworkFallback'
 import SceneLoader from '@/components/canvas/SceneLoader'
-import AmbientBackground from '@/components/canvas/AmbientBackground'
-
+const AmbientBackground = dynamic(() => import('@/components/canvas/AmbientBackground'), { ssr: false })
 const Scene = dynamic(() => import('@/components/canvas/Scene'), { ssr: false })
 
 export default function Hero() {
