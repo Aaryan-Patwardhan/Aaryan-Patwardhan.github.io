@@ -4,7 +4,7 @@ export const resume: ResumeData = {
   name: "Aaryan Patwardhan",
   title: "AI Systems Engineer",
   tagline: "I build systems that see, decide, and heal themselves.",
-  bio: "B.E. Information Technology student at SPPU (2027). I design autonomous AI pipelines — from real-time computer vision at 55fps to self-healing server daemons and passive attendance intelligence. I work at the intersection of deep learning, systems design, and edge inference.",
+  bio: "Pursuing a B.E. in Information Technology at SPPU. I design autonomous AI pipelines — from real-time computer vision at 55fps to self-healing server daemons and passive attendance intelligence. I work at the intersection of deep learning, systems design, and edge inference.",
   location: "Pune, India",
   timezone: "IST (UTC+5:30)",
   email: "hello@aaryanpatwardhan.dev",
@@ -61,7 +61,7 @@ export const resume: ResumeData = {
     {
       degree: "B.E. Information Technology",
       institution: "Savitribai Phule Pune University (SPPU)",
-      period: "2023 – 2027"
+      period: "Current"
     }
   ]
 }
