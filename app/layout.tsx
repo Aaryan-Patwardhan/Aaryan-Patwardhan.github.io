@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import CursorDot from '@/components/layout/CursorDot'
+import { Analytics } from '@vercel/analytics/next'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -43,6 +44,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="bg-[var(--bg)] text-[var(--text-primary)] antialiased overflow-x-hidden">
         <CursorDot />
         {children}
+        <Analytics />
       </body>
     </html>
   )
