@@ -1,53 +1,78 @@
 import type { ProjectMeta } from '@/types'
 
+// Rule: every sentence must be true of the code as it exists today, and any
+// number must be one that can be reproduced with a command. Planned work is
+// labelled as planned. Order follows QuantaSharp/STRATEGY.md.
 export const projects: ProjectMeta[] = [
   {
-    id: "sentinel-mesh",
-    slug: "sentinel-mesh",
-    version: "1.0",
+    id: "invoice-poc",
+    slug: "invoice-poc",
+    version: "3.3",
     status: "published",
-    date: "2026-03",
-    title: "SentinelMesh",
-    tagline: "Autonomous drone fleet that detects, debates, and dispatches — without human input.",
-    tags: ["Vision AI", "Automation", "Systems"],
-    metrics: ["55fps YOLOv8n", "< 50ms dispatch", "RTX 3050 Ti", "MAPE-K loop"],
-    techStackIds: ["python", "yolov8", "opencv", "cuda", "pytorch", "llama-cpp", "fastapi", "react"],
+    date: "2026-10",
+    title: "InvoiceAI",
+    tagline: "Reads Indian GST invoices — digital PDFs, scans and phone photos — checks its own work, and marks anything doubtful for a person to review.",
+    tags: ["Automation", "Backend", "Vision AI"],
+    metrics: ["121 automated tests", "Accuracy gate in CI", "GSTIN check-digit validation", "Offline Docker package"],
+    techStackIds: ["python", "fastapi", "ollama", "sqlite", "docker", "github-actions"],
     featured: true,
-    coverImage: "/projects/sentinel-mesh/cover.png",
+    coverImage: "/projects/invoice-poc/cover.webp",
     caseStudy: {
-      problem: "Urban safety incidents require response in seconds, not minutes. Existing systems rely on human operators for every dispatch decision — a bottleneck that scales poorly under simultaneous multi-zone incidents.",
-      approach: "Adapted the MAPE-K autonomic computing loop from server healing into drone fleet management. Added an Adversarial Debate Engine between detection and dispatch to eliminate false positive responses.",
-      architecture: "Split inference across two machines: Garuda Linux (RTX 3050 Ti) handles all CUDA inference — YOLOv8n at imgsz=480 and Qwen2.5-1.5B-Instruct Q4_K_M via llama-cpp-python. Windows machine handles FastAPI, fleet simulation, and React + Leaflet.js dashboard. Confidence tier gating bypasses LLM debate for high-confidence detections (≥ 0.88), cutting dispatch to ~50ms. Ghost Protocol enables automatic drone reassignment on failure with zero operator intervention.",
-      results: "Real-time detection at 55fps on consumer edge hardware — enabling sub-50ms dispatch for high-confidence events. Self-healing fleet with automatic drone reassignment eliminates manual intervention. Predictive pre-positioning via Temporal Shadow Deployment reduces response time by estimated 40% during multi-zone incidents.",
+      problem: "Accounting teams in India type GST invoice details — GSTINs, dates, tax splits and totals — into Tally by hand, hundreds of times a month. AI can read invoices, but small local models make mistakes, and a wrong value that looks complete is worse than no value at all.",
+      approach: "The AI reads; deterministic rules check the result; every doubt is shown. Text PDFs go through a text model, scans and photos through a vision model, both running locally via Ollama. A verification layer then checks what the model returned before anything is saved.",
+      architecture: "FastAPI service with SQLite storage. Verification layer: GSTIN check-digit validation with OCR repair (a repaired GSTIN is accepted only when its checksum passes), totals and CGST/SGST cross-checks, item amount checks (quantity × rate), PAN checks, and seller/buyer correction from text positions in the PDF. A labelled golden set is evaluated in GitHub Actions, so a model or prompt change that lowers accuracy cannot be merged. Shipped as an offline Docker package with Windows and Linux installers; the dashboard is designed for non-technical and older users.",
+      results: "On 6 synthetic and public sample invoices: 75% field accuracy and 0 invented values (up from 67% and 2). That set is too small to quote to clients — measurement on 20–30 real invoices is next. Coming next: a review screen for flagged fields and Tally / Zoho Books export. Private commercial product — demo on request.",
       diagrams: [
-        { path: "/projects/sentinel-mesh/architecture.png", caption: "MAPE-K autonomic loop and dual-machine split", type: "architecture" },
-        { path: "/projects/sentinel-mesh/dashboard.png", caption: "Real-time Leaflet.js fleet dashboard", type: "screenshot" }
-      ],
-      githubUrl: "https://github.com/Aaryan-Patwardhan/sentinel-mesh"
+        { path: "/projects/invoice-poc/result-complete.webp", caption: "Main details found — marked “Looks complete” (sample invoice)", type: "screenshot" },
+        { path: "/projects/invoice-poc/cover.webp", caption: "Problems found — marked “Please check this” (sample invoice)", type: "screenshot" },
+        { path: "/projects/invoice-poc/saved.webp", caption: "Saved invoices, ready to download for Excel (sample data)", type: "screenshot" }
+      ]
     }
   },
   {
-    id: "ghost-admin",
-    slug: "ghost-admin",
+    id: "cramiq",
+    slug: "cramiq",
     version: "1.0",
     status: "published",
-    date: "2026-03",
-    title: "Ghost-Admin",
-    tagline: "Air-gapped Linux daemon that heals servers through semantic reasoning — not blind thresholds.",
-    tags: ["Automation", "Systems", "Backend"],
-    metrics: ["7-stage MAPE-K", "< 30s detection", "RAG memory", "Zero cloud calls"],
-    techStackIds: ["python", "llama-cpp", "cuda", "fish-shell", "linux"],
+    date: "2026-06",
+    title: "CramIQ",
+    tagline: "Exam preparation for SPPU engineering students: a study planner, a study vault, progress streaks and a daily briefing email.",
+    tags: ["Full-Stack", "Backend"],
+    metrics: ["Live for students", "FastAPI + PostgreSQL", "Next.js on Vercel", "Sandboxed production service"],
+    techStackIds: ["python", "fastapi", "postgresql", "redis", "nextjs", "gemini", "linux"],
     featured: true,
-    coverImage: "/projects/ghost-admin/cover.png",
+    coverImage: "/projects/cramiq/cover.webp",
     caseStudy: {
-      problem: "Kubernetes probes kill processes when RAM hits a threshold. Nagios fires alerts engineers silence at 3AM. Static bash scripts restart services mid-transaction. These tools are syntactic — they read numbers. They do not reason. The result: $9,000/minute average cost for large enterprise outages, 25 unplanned incidents per month in the average industrial plant.",
-      approach: "Built the first air-gapped, semantically-aware server healing daemon that classifies process intent — not just resource state. Implemented a strict 7-stage MAPE-K closed-loop: DETECT → ISOLATE → PROFILE → EXTRACT → REASON → EXECUTE → AUDIT. Every stage has a defined interface; the AI only sees fully-fused context, never raw metrics.",
-      architecture: "DETECT: 60-second rolling RAM window triggers on growth trajectory before crisis (fires at 60% climbing, not 85% already critical). ISOLATE: Whitelist guardrail immunizes systemd, sshd, and critical processes. PROFILE: 24-hour behavioral fingerprinting builds per-process P95 baselines — an ML training job hitting 78% RAM is normal; an HTTP server hitting 55% for the first time is not. EXTRACT: Multi-signal context fusion assembles RAM, CPU, file handles, thread count, network connections, full process ancestry tree, journalctl logs, and RAG-retrieved similar past incidents. REASON: llama3.2:3b via Ollama (CUDA) classifies intent across 5 categories: WORKING_AS_INTENDED, DEGRADED_BUT_FUNCTIONAL, LEAKING, UNDER_ATTACK, UNKNOWN — making it the first self-healing daemon with rudimentary intrusion detection built in. EXECUTE: 4-step graceful degradation ladder (SIGTERM → cgroup cap → SIGSTOP → SIGKILL) with a pre-kill forensic gcore dump for post-mortem analysis. Cascade Correlation halts individual kill decisions when 2+ processes spike within 60 seconds. AUDIT: Append-only JSONL audit log directly ingestible by SIEM systems (Splunk, Elastic, Wazuh).",
-      results: "Mean time to detection reduced from ~15 minutes (on-call engineer) to under 30 seconds. Confidence gate below 0.70 escalates rather than kills — false positive rate under 5%. Pre-kill forensic memory dumps enable post-mortem root cause analysis. RAG memory layer means the daemon improves with every incident it handles. Zero bytes of operational data leave the machine.",
+      problem: "SPPU engineering students prepare from scattered syllabus PDFs, past papers and notes, with no simple way to plan what to study before each exam.",
+      approach: "Started as an exam-prediction engine, then pivoted to a study planner: what to study next for your exams, a vault of material, and streaks to keep going. Practice papers based on past patterns are published by admins and labelled as practice, never as likely questions.",
+      architecture: "FastAPI backend with async SQLAlchemy on PostgreSQL (Supabase), Redis cache, Gemini for study material, Resend for email OTP login and a nightly briefing scheduled with APScheduler. Next.js frontend on Vercel. The API runs behind nginx on an Ubuntu VM as an unprivileged, sandboxed systemd service, with deploys from tagged releases or main and automatic rollback if the health check fails.",
+      results: "Live and used by students; a daily briefing email goes out every night. Next: publish real usage numbers, a privacy page, nightly database backups and a CI test run.",
+      diagrams: [],
+      liveUrl: "https://sppu-agent.vercel.app"
+    }
+  },
+  {
+    id: "hyron-ai",
+    slug: "hyron-ai",
+    version: "1.0",
+    status: "published",
+    date: "2026-10",
+    title: "Hyron AI",
+    tagline: "Finds the risky packages in a project's npm dependencies, explains each score, and plans safe upgrades. FUSION 2026 hackathon — team lead.",
+    tags: ["Automation", "Backend", "Systems"],
+    metrics: ["24-hour hackathon build", "OSV + EPSS + CISA KEV", "Explainable 0–100 score", "Team of four"],
+    techStackIds: ["python", "fastapi", "react", "networkx"],
+    featured: true,
+    coverImage: "/projects/hyron-ai/cover.webp",
+    caseStudy: {
+      problem: "A project's real risk sits deep in its transitive npm dependencies, and vulnerability lists don't say which findings matter most or what upgrading would break.",
+      approach: "Led a four-person team that built, in 24 hours, a scanner that maps direct and transitive dependencies across projects and ranks findings with a transparent score instead of a raw list.",
+      architecture: "Reads npm lockfiles and builds a dependency graph in NetworkX (npm's nearest-node_modules resolution). Each package is checked against OSV.dev advisories and scored with CVSS, FIRST EPSS and CISA KEV into an explainable 0–100 risk score, with blast radius across projects. Upgrade plans stay within semver and pass an AUTO / REVIEW / BLOCK gate. FastAPI backend, React dashboard.",
+      results: "Working scan → score → upgrade plan on real npm projects. Limitations: reachability is not analysed, and verification re-scans advisories rather than installing and testing the upgrade. Next: a GitHub Action version and pnpm / yarn / Python lockfiles.",
       diagrams: [
-        { path: "/projects/ghost-admin/mape-k.png", caption: "7-stage MAPE-K closed-loop architecture", type: "flowchart" }
+        { path: "/projects/hyron-ai/cover.webp", caption: "Architecture: a local control loop with a clear trust boundary", type: "architecture" }
       ],
-      githubUrl: "https://github.com/Aaryan-Patwardhan/ghost_admin"
+      githubUrl: "https://github.com/Aaryan-Patwardhan/fusion2026"
     }
   },
   {
@@ -55,143 +80,68 @@ export const projects: ProjectMeta[] = [
     slug: "aura",
     version: "1.0",
     status: "published",
-    date: "2026-03",
-    title: "Aura — Passive Attendance Intelligence",
-    tagline: "The college Wi-Fi becomes the sensor. No student app. No QR codes. No GPS. No cooperation required.",
-    tags: ["Automation", "Systems", "Backend", "Full-Stack"],
-    metrics: ["RADIUS-based", "< 100ms ingestion", "Isolation Forest AI", "Docker Compose"],
-    techStackIds: ["python", "fastapi", "redis", "postgresql", "react", "docker", "sqlite"],
-    featured: true,
-    coverImage: "/projects/aura/cover.png",
+    date: "2026-05",
+    title: "Aura — attendance from campus Wi-Fi",
+    tagline: "Turns Wi-Fi accounting events into attendance records — no student app. A working prototype driven by a simulator.",
+    tags: ["Systems", "Backend", "Full-Stack"],
+    metrics: ["Prototype", "Redis Streams", "PostgreSQL", "Docker Compose"],
+    techStackIds: ["python", "fastapi", "redis", "postgresql", "react", "docker"],
+    featured: false,
+    coverImage: "/projects/aura/architecture.png",
     caseStudy: {
-      problem: "Every existing attendance system fails at the infrastructure layer — they trust students to self-report presence. Manual registers get signed by friends. QR codes are screenshot-shared in 10 seconds. GPS is spoofed with a VPN. RFID cards get handed off. None of these operate below the application layer.",
-      approach: "Ingested RADIUS Accounting logs directly from the college's Wireless LAN Controller — existing campus infrastructure. When a student's device associates with the access point inside a lecture room, a RADIUS Accounting-Start event fires automatically. No app install. No check-in button. No student interaction. The primary session key is the authenticated User-Name from 802.1X, not MAC address — making the system immune to MAC randomization (iOS 14+, Android 10+) since the randomized MAC is a Layer 2 artifact while the credential-verified username travels inside the EAP tunnel at Layer 7.",
-      architecture: "RADIUS Simulator generates realistic Accounting-Start/Stop/Interim-Update packets (mimics Cisco/Aruba WLC) across 3 pre-built demo scenarios: normal_lecture, bandwidth_fraud, mac_clone_attempt. FastAPI Ingestion Server (async) parses User-Name, MAC, AP-Name, RSSI, and byte counters, dispatching events to Redis with sub-100ms latency. Redis Session Manager holds live state per active device — not a database write on every packet. Session Finalizer Worker (background process) calculates minutes present, enforces 75% attendance threshold, runs Isolation Forest Focus Score, and writes finalized records to PostgreSQL. React Dashboard shows live room occupancy, per-student session timelines, and AI-flagged sessions with score breakdown. Role-based: Faculty view (their courses only), Admin view (full campus).",
-      results: "Passive attendance tracking with zero student cooperation required. Focus Score AI (Isolation Forest) detects bandwidth anomaly patterns — a student streaming 600MB during a 45-minute theory lecture scores differently from the same 600MB during a 3-hour lab, because the model is multivariate (bytes + duration jointly). INTEGRITY_SUSPECT sessions flagged on MAC/credential mismatch before opening. Ingestion latency under 100ms per RADIUS event under 500 concurrent sessions. Full demo runnable on a single machine via Docker Compose.",
+      problem: "Manual registers are signed by friends and QR codes are shared in seconds. Campus Wi-Fi already knows which authenticated users are connected to which room's access point.",
+      approach: "Use RADIUS accounting events (Start / Interim-Update / Stop) from the Wi-Fi controller as the signal, keyed on the 802.1X-authenticated user name rather than the device's MAC address.",
+      architecture: "A simulator generates RADIUS accounting events from scenario files. FastAPI ingests them, keeps live sessions in Redis, and a worker consumes a Redis Stream to finalise sessions: minutes present, a 75% attendance rule, and an Isolation Forest anomaly score, written to PostgreSQL. React dashboard; everything runs with Docker Compose.",
+      results: "Runs end to end with the simulator. Honest limits: the anomaly model is trained on synthetic data, the integrity flag in the demo comes from the simulator, there is no login or role-based view yet, and no real Wi-Fi controller has been connected. Performance has not been benchmarked.",
       diagrams: [
-        { path: "/projects/aura/architecture.png", caption: "RADIUS → Redis → PostgreSQL pipeline", type: "architecture" }
+        { path: "/projects/aura/architecture.png", caption: "RADIUS events → FastAPI → Redis Streams → PostgreSQL", type: "architecture" }
       ],
       githubUrl: "https://github.com/Aaryan-Patwardhan/aura"
     }
   },
   {
-    id: "invoice-poc",
-    slug: "invoice-poc",
-    version: "3.0",
-    status: "published",
-    date: "2026-04",
-    title: "Invoice Automation POC",
-    tagline: "Fully local AI pipeline that extracts 29 invoice fields (including line items) from PDFs and scanned images — zero cloud, zero data leakage.",
-    tags: ["Automation", "Backend", "Vision AI"],
-    metrics: ["100% offline", "Two-Pass Vision OCR", "Line Item Extraction", "REST API + CSV export"],
-    techStackIds: ["python", "sqlite", "ollama", "fastapi"],
-    featured: false,
-    coverImage: "/projects/invoice-poc/cover.png",
-    caseStudy: {
-      problem: "Indian SMBs process hundreds of invoices monthly — from digital PDFs to WhatsApp-photographed paper bills. Cloud OCR solutions (AWS Textract, Google Document AI) send financial documents to third-party servers. For businesses with confidential vendor relationships, GSTIN data, and payment terms, this is a non-starter. Local alternatives either lack vision OCR for scanned documents or require complex infrastructure.",
-      approach: "Built a dual-path extraction pipeline with intelligent automatic routing. Text-extractable PDFs go through a fast text LLM path (~2s). Scanned PDFs and images fall back to a vision LLM using a robust Two-Pass approach: Pass 1 captures headers and totals, Pass 2 captures complex line items and tax summaries. This bypasses the context timeouts typical of local vision models on dense documents.",
-      architecture: "extractor.py: PyMuPDF attempts text extraction (≥120 char threshold). Text path → Qwen2.5:1.5b via Ollama generate API. Vision path → Qwen2.5-VL:3b via Ollama chat API using two distinct prompts mapped over up to 3 pages, keeping the highest-confidence merged result. Field validation layer: GST number regex validation (15-char GSTIN), ISO 8601 date normalisation (DD/MM/YYYY → YYYY-MM-DD), amount cleanup. Confidence score (0.0–1.0) weighted by field importance. SQLite schema with unique index stringifies line_items JSON. api.py: FastAPI 2.0 REST layer — single extract, batch (up to 20 files), paginated list, CSV export (UTF-8 BOM), stats endpoint. app.py: 4-tab Gradio UI — Extract (live JSON + line items table), History, Stats, About.",
-      results: "29 structured fields extracted per invoice (vs 10 in v2). Successfully isolates line-item rows (product, HSN/SAC, quantity, unit price, discounts, individual tax slabs). Multi-page two-pass vision OCR increases extraction depth without timing out, scaling to dense industrial invoices. Confidence scoring allows downstream systems to flag fuzzy extras. Zero bytes of sensitive data leave the machine.",
-      diagrams: [
-        { path: "/projects/invoice-poc/pipeline.png", caption: "Dual-path extraction: text LLM vs Two-Pass Vision OCR", type: "architecture" }
-      ],
-      githubUrl: "https://github.com/Aaryan-Patwardhan/invoice-automation-poc"
-    }
-  },
-  {
-    id: "ppe-detection",
-    slug: "ppe-detection",
+    id: "sentinel-mesh",
+    slug: "sentinel-mesh",
     version: "1.0",
-    status: "published",
-    date: "2025-11",
-    title: "PPE Detection System",
-    tagline: "Real-time safety compliance detection for industrial environments at 60fps.",
-    tags: ["Vision AI"],
-    metrics: ["60fps", "YOLOv8", "Real-time alerts"],
-    techStackIds: ["python", "yolov8", "opencv", "cuda", "pytorch"],
-    featured: false,
-    coverImage: "/projects/ppe-detection/cover.png",
-    caseStudy: {
-      problem: "Manual PPE compliance checks are infrequent and miss real-time violations. Existing camera systems are passive recorders, not active safety monitors.",
-      approach: "Trained a custom YOLOv8 model on a labeled PPE dataset. Integrated real-time alert pipeline with configurable violation thresholds and zone-based rules.",
-      architecture: "YOLOv8 model fine-tuned on hard-hat, vest, and glove detection. CUDA-accelerated inference pipeline. Zone configuration per camera feed. Alert dispatcher with cooldown logic to prevent alert fatigue.",
-      results: "Real-time PPE compliance monitoring eliminates manual checks — reduces compliance violations caught from hours to seconds. Configurable zone-based rules and sub-100ms alert latency enable immediate corrective action. Alert cooldown prevents fatigue while ensuring critical violations are escalated.",
-      diagrams: [
-        { path: "/projects/ppe-detection/detection.png", caption: "Real-time PPE detection output", type: "screenshot" }
-      ],
-      githubUrl: "https://github.com/Aaryan-Patwardhan/ppe-detection"
-    }
-  },
-  {
-    id: "upwork-pipeline",
-    slug: "upwork-pipeline",
-    version: "2.0",
     status: "published",
     date: "2026-03",
-    title: "Autonomous Upwork Pipeline",
-    tagline: "Automated job-hunting with LLM scoring, client quality signals, and Telegram delivery.",
-    tags: ["Automation", "Backend"],
-    metrics: ["Composite scoring", "Telegram alerts", "Zero manual review", "SQLite dedup"],
-    techStackIds: ["python", "sqlite", "fish-shell"],
+    title: "SentinelMesh",
+    tagline: "AI-assisted drone response: YOLOv8 detection with two local LLM agents arguing before a dispatch. INSPIRON 5.0 (COEP) — AI core lead.",
+    tags: ["Vision AI", "Automation", "Systems"],
+    metrics: ["Hackathon build", "YOLOv8", "Two-agent debate", "Simulated fleet"],
+    techStackIds: ["python", "yolov8", "opencv", "cuda", "llama-cpp", "fastapi", "react"],
     featured: false,
-    coverImage: "/projects/upwork-pipeline/cover.png",
+    coverImage: "/projects/sentinel-mesh/cover.png",
     caseStudy: {
-      problem: "Manually browsing Upwork for relevant jobs is time-consuming and inconsistent. Most job boards have no intelligence layer — you see everything or nothing.",
-      approach: "Built a two-version pipeline. V1: RSS parsing + LLM scoring + Telegram alerts. V2: added client quality scoring, feedback loop with Telegram inline keyboard, and watchdog health monitoring.",
-      architecture: "feed_parser.py (RSS + SQLite dedup) → client_scorer.py (deterministic pre-filtering) → ai_filter.py (Ollama LLM relevance scoring) → notifier.py (Telegram). Composite scoring: 50% AI relevance, 25% client quality, 25% competition opportunity. feedback_loop.py logs apply/skip decisions to a feedback DB for future model improvement.",
-      results: "Eliminates 2+ hours of daily manual job browsing — passive market data collection runs autonomously. Composite LLM scoring filters signal from noise, increasing relevant job discovery rate by estimated 60%. Telegram inline keyboard feedback loop continuously improves relevance model.",
-      diagrams: [
-        { path: "/projects/upwork-pipeline/pipeline.png", caption: "V2 pipeline architecture", type: "architecture" }
-      ],
-      githubUrl: "https://github.com/Aaryan-Patwardhan/upwork-pipeline"
+      problem: "Every dispatch decision in an incident-response system waits for a human operator, which doesn't scale when several incidents happen at once.",
+      approach: "Route each detection by confidence: clear detections go straight to dispatch, unclear ones go to two local LLM agents — one argues for dispatch, one against — before a decision is made.",
+      architecture: "YOLOv8 incident detection on recorded video; confident detections are dispatched directly and unclear ones go to the two-agent debate (Qwen2.5 via llama-cpp-python, on a local CUDA GPU). A simulated drone fleet with geofencing streams over WebSockets to a live React and Leaflet map, served by FastAPI.",
+      results: "A working end-to-end demo built for the INSPIRON 5.0 hackathon at COEP, on recorded video and a simulated fleet — not tested with real drones.",
+      diagrams: []
     }
   },
   {
-    id: "ecommerce",
-    slug: "ecommerce",
-    version: "1.0",
-    status: "published",
-    date: "2025-09",
-    title: "Full-Stack E-Commerce Platform",
-    tagline: "End-to-end online store with inventory management, cart, and order processing.",
-    tags: ["Full-Stack", "Backend"],
-    metrics: ["Python/Flask", "REST API", "Full cart flow"],
-    techStackIds: ["python", "flask", "sqlite", "react"],
+    id: "ghost-admin",
+    slug: "ghost-admin",
+    version: "0.1",
+    status: "wip",
+    date: "2026-04",
+    title: "Ghost-Admin (prototype)",
+    tagline: "A Linux daemon designed to notice runaway processes and step through safe, logged fixes. Work in progress — the AI step is not working yet.",
+    tags: ["Systems", "Automation"],
+    metrics: ["Prototype", "7-stage design", "JSONL audit log", "Local LLM via Ollama"],
+    techStackIds: ["python", "ollama", "linux"],
     featured: false,
-    coverImage: "/projects/ecommerce/cover.png",
+    coverImage: "/projects/ghost-admin/mape-k.png",
     caseStudy: {
-      problem: "Client needed a custom e-commerce solution without the overhead of Shopify fees and lock-in.",
-      approach: "Built a full-stack application with Flask backend and React frontend. Designed a clean REST API with JWT authentication and SQLite persistence.",
-      architecture: "Flask REST API with blueprint architecture. SQLite for product catalog and orders. React frontend with cart state management. Admin dashboard for inventory. Deployed on a VPS with Nginx reverse proxy.",
-      results: "Custom e-commerce solution eliminates Shopify monthly fees — saves estimated $100+/month in platform costs. Complete order flow from browsing to checkout with sub-200ms API response times. Admin dashboard enables real-time inventory management without third-party dependencies.",
+      problem: "Threshold-based tools restart or kill processes based on numbers alone, without asking whether the process is actually misbehaving.",
+      approach: "Designed a 7-stage closed loop — detect, isolate, profile, extract, reason, execute, audit — where a local LLM classifies a process's behaviour before a graduated response, and cascades of spikes escalate to a person instead of triggering kills.",
+      architecture: "Python daemon polling RAM every 5 seconds; whitelist guard and per-process baselines; context from CPU, file handles, process ancestry and journalctl; intended classification by a local model via Ollama; a remediation ladder (SIGTERM → memory cap → SIGSTOP → core dump → SIGKILL); append-only JSONL audit log.",
+      results: "Prototype. Known gaps being fixed: the LLM reasoning step fails before calling the model, the memory (RAG) layer is not built, and a dry-run mode is needed before it should ever act on a real server.",
       diagrams: [
-        { path: "/projects/ecommerce/architecture.png", caption: "System architecture", type: "architecture" }
+        { path: "/projects/ghost-admin/mape-k.png", caption: "Design of the 7-stage loop (not all stages work yet)", type: "flowchart" }
       ],
-      githubUrl: "https://github.com/Aaryan-Patwardhan/ecommerce"
-    }
-  },
-  {
-    id: "pocket-lawyer",
-    slug: "pocket-lawyer",
-    version: "1.0",
-    status: "published",
-    date: "2025-12",
-    title: "PocketLawyer Edge AI",
-    tagline: "On-device legal assistant for Android with fully local LLM inference — no server, no data leaks.",
-    tags: ["Automation", "Systems"],
-    metrics: ["On-device LLM", "Android", "Zero API calls"],
-    techStackIds: ["android", "python"],
-    featured: false,
-    coverImage: "/projects/pocket-lawyer/cover.png",
-    caseStudy: {
-      problem: "Legal questions in India are complex and inaccessible. Cloud-based AI leaks sensitive legal queries to third-party servers.",
-      approach: "Built a fully on-device Android app with a quantized LLM running locally. Zero network calls for inference. Privacy-preserving by architecture.",
-      architecture: "Quantized LLM model bundled with the APK. On-device inference via Android NDK bindings. Query preprocessing and context injection. Response streaming to chat UI.",
-      results: "100% on-device inference eliminates data transmission risk entirely — sensitive legal queries never leave the user's device. Quantized LLM runs viably on mid-range Android hardware, making privacy-preserving AI accessible to anyone with a smartphone.",
-      diagrams: [
-        { path: "/projects/pocket-lawyer/app-screen.png", caption: "App interface", type: "screenshot" }
-      ],
-      githubUrl: "https://github.com/Aaryan-Patwardhan/pocket-lawyer"
+      githubUrl: "https://github.com/Aaryan-Patwardhan/ghost_admin"
     }
   }
 ]

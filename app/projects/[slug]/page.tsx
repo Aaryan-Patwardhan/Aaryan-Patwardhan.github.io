@@ -8,6 +8,9 @@ import { getProjectBySlug, getAllSlugs, getRelatedProjects } from '@/lib/utils/p
 
 interface Props { params: Promise<{ slug: string }> }
 
+// Only the projects in lib/projects.ts exist; any other slug is a real 404.
+export const dynamicParams = false
+
 export async function generateStaticParams() {
   return getAllSlugs().map(slug => ({ slug }))
 }
@@ -56,6 +59,12 @@ export default async function CaseStudyPage({ params }: Props) {
             )}
             {project.caseStudy.demoUrl && (
               <a href={project.caseStudy.demoUrl} target="_blank" rel="noopener noreferrer" className="text-sm font-mono text-[var(--accent)] hover:underline underline-offset-2">Demo ↗</a>
+            )}
+            {project.caseStudy.liveUrl && (
+              <a href={project.caseStudy.liveUrl} target="_blank" rel="noopener noreferrer" className="text-sm font-mono text-[var(--accent)] hover:underline underline-offset-2">Live site ↗</a>
+            )}
+            {!project.caseStudy.githubUrl && !project.caseStudy.liveUrl && !project.caseStudy.demoUrl && (
+              <span className="text-sm font-mono text-[var(--text-dim)]">Code is private — demo on request</span>
             )}
           </div>
         </div>

@@ -91,7 +91,7 @@ export type ResumeData = {
   github: string
   linkedin: string
   availableForWork: boolean
-  preferredEngagement: 'freelance' | 'fulltime' | 'contract'
+  preferredEngagement: 'internship' | 'freelance' | 'fulltime' | 'contract'
   responseTime: string
   experience: ExperienceItem[]
   education: EducationItem[]

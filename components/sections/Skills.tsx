@@ -12,7 +12,7 @@ const CATEGORIES: SkillCategory[] = [
   'Languages',
   'Backend',
   'Systems & Infra',
-  'Mobile'
+  'Tools'
 ]
 
 export default function Skills() {

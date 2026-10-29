@@ -39,7 +39,7 @@ export default function Hero() {
           transition={{ duration: 0.3, delay: 0 }}
         >
           <p className="font-mono text-xs text-[var(--accent)] tracking-widest mb-4 uppercase">
-            AI Systems Engineer
+            {resume.title}
           </p>
           <h1 className="text-4xl md:text-6xl font-bold text-[var(--text-primary)] leading-tight mb-4">
             {resume.name}

@@ -1,67 +1,48 @@
 import type { ResumeData } from '@/types'
 
+// Every line here must match uploadables/Resume (checked against the code on
+// 2026-10-26). Projects are not jobs: they live in lib/projects.ts.
 export const resume: ResumeData = {
   name: "Aaryan Patwardhan",
-  title: "AI Systems Engineer",
-  tagline: "I build systems that see, decide, and heal themselves.",
-  bio: "Pursuing a B.E. in Information Technology at SPPU. I design autonomous AI pipelines — from real-time computer vision at 55fps to self-healing server daemons and passive attendance intelligence. I work at the intersection of deep learning, systems design, and edge inference.",
+  title: "Applied AI Systems Engineer · Founder, QuantaSharp",
+  tagline: "I build AI systems that take repetitive work off people's plates — and show you anything they aren't sure about.",
+  bio: "Third-year B.E. IT student who builds applied AI systems that check their own output: the AI reads, deterministic rules verify, and every doubtful result is shown to a person. I work across Python backends, LLMs, React and Docker.",
   location: "Pune, India",
   timezone: "IST (UTC+5:30)",
-  email: "hello@aaryanpatwardhan.dev",
+  email: "patwardhanaaryan@gmail.com",
   github: "https://github.com/Aaryan-Patwardhan",
   linkedin: "https://linkedin.com/in/aaryan-patwardhan",
   availableForWork: true,
-  preferredEngagement: "freelance",
+  preferredEngagement: "internship",
   responseTime: "< 24 hours",
   experience: [
     {
-      role: "AI Core Lead",
-      org: "SentinelMesh — INSPIRON 5.0 (CSI COEP)",
-      period: "2026",
+      role: "Founder & Applied AI Systems Engineer",
+      org: "QuantaSharp, Pune",
+      period: "Apr 2026 – Present",
       bullets: [
-        "Designed MAPE-K autonomic loop for self-healing autonomous drone fleet",
-        "YOLOv8n at 55fps on RTX 3050 Ti with dual CUDA co-inference (vision + LLM)",
-        "Built Adversarial Debate Engine: Agent-A Dispatcher vs Agent-B Skeptic before any dispatch",
-        "Implemented confidence tier gating — LLM bypassed at conf ≥ 0.88 for ~50ms dispatch"
+        "Built InvoiceAI, which reads Indian GST invoices (digital PDFs, scans and phone photos) with local LLMs via Ollama behind a FastAPI service with SQLite storage.",
+        "Designed a deterministic verification layer: GSTIN check-digit validation with OCR repair that is accepted only when the checksum passes, totals and CGST/SGST cross-checks, and seller/buyer correction from PDF text positions. Every doubtful field is flagged for review.",
+        "Wrote 121 automated tests and a labelled golden-set accuracy gate in GitHub Actions, so a model or prompt change that lowers accuracy cannot be merged.",
+        "Shipped it as an offline Docker package with Windows and Linux installers, and designed the dashboard for non-technical and older users."
       ]
     },
     {
-      role: "Systems Engineer",
-      org: "Ghost-Admin — Autonomous Server Healing Daemon",
-      period: "2026",
+      role: "Python AI/ML Development Intern",
+      org: "Code N Try, Pune",
+      period: "Jan 2026 – Feb 2026",
       bullets: [
-        "Built 7-stage MAPE-K closed-loop: trend-based pre-detection, behavioral fingerprinting, multi-signal context fusion, semantic intent classification, graceful degradation ladder, pre-kill forensic dumps, and SIEM-ready JSONL audit log",
-        "llama3.2:3b via Ollama (CUDA) classifies process intent across 5 categories including UNDER_ATTACK — giving the daemon rudimentary intrusion detection built in",
-        "RAG memory layer (FAISS + sentence-transformers) retrieves similar past incidents before every AI query — daemon improves with each event",
-        "Reduced mean time to detection from ~15 minutes (on-call) to under 30 seconds; zero cloud API calls"
-      ]
-    },
-    {
-      role: "Backend Engineer",
-      org: "Aura — Passive Attendance Intelligence",
-      period: "2026",
-      bullets: [
-        "Ingested RADIUS Accounting logs from campus WLC — no student app, no QR codes, no cooperation required",
-        "Primary session key is 802.1X-authenticated User-Name, not MAC address — immune to MAC randomization (iOS 14+, Android 10+)",
-        "Isolation Forest Focus Score detects bandwidth anomaly patterns multivariant on (bytes, duration) jointly — no hardcoded thresholds per course type",
-        "Full stack: FastAPI ingestion (async, <100ms), Redis session state, PostgreSQL persistence, React dashboard with role-based views"
-      ]
-    },
-    {
-      role: "Backend Engineer",
-      org: "Upwork Automation Pipeline",
-      period: "2026",
-      bullets: [
-        "Built two-version automated job-hunting pipeline with LLM scoring and Telegram alerts",
-        "V2: composite scoring (50% AI relevance, 25% client quality, 25% competition opportunity)"
+        "Built a house-price prediction model: explored the data with pandas and Seaborn, trained a scikit-learn regression on a train/test split, and saved it with joblib for a prediction script.",
+        "Built a Flask and SQLAlchemy web store with a product catalogue, session cart, checkout and an admin dashboard for adding and editing products.",
+        "Built a command-line chat assistant on the Google Gemini API, with the API key kept out of the code."
       ]
     }
   ],
   education: [
     {
       degree: "B.E. Information Technology",
-      institution: "Savitribai Phule Pune University (SPPU)",
-      period: "Current"
+      institution: "SKN Sinhgad Institute of Technology & Science, Lonavala (Savitribai Phule Pune University)",
+      period: "Expected Jun 2028"
     }
   ]
 }
