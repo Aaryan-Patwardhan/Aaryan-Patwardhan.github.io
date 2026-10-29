@@ -31,8 +31,8 @@ export default function About() {
             initial="hidden" animate={isVisible ? 'visible' : 'hidden'}
             className="text-2xl font-bold text-[var(--text-primary)] mb-6"
           >
-            Systems thinker.<br />
-            Vision AI and autonomy.
+            AI that checks<br />
+            its own work.
           </motion.h2>
           <motion.p
             custom={2} variants={fadeUp}

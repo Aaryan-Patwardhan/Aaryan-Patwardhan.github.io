@@ -1,24 +1,26 @@
 import type { Skill, SkillCategory } from '@/types'
 import { projects } from './projects'
 
+// projectIds must match lib/projects.ts. Highlights describe what was built,
+// never an unmeasured number.
 export const skills: Skill[] = [
-  { id: "python",       name: "Python",             category: "Languages",        projectIds: ["sentinel-mesh","ghost-admin","aura","invoice-poc","ppe-detection","upwork-pipeline","ecommerce","pocket-lawyer"], yearsUsed: 3, highlight: "Primary language across all ML and backend work" },
-  { id: "yolov8",       name: "YOLOv8",              category: "Vision AI",        projectIds: ["sentinel-mesh","ppe-detection"], yearsUsed: 2, highlight: "55fps real-time detection on edge hardware" },
-  { id: "opencv",       name: "OpenCV",              category: "Vision AI",        projectIds: ["sentinel-mesh","ppe-detection"], yearsUsed: 2, highlight: "Real-time frame pipeline with CUDA-accelerated preprocessing" },
-  { id: "cuda",         name: "CUDA / cuDNN",        category: "Systems & Infra",  projectIds: ["sentinel-mesh","ghost-admin","ppe-detection"], yearsUsed: 2, highlight: "Dual CUDA inference: YOLOv8 + GGUF LLM simultaneously on RTX 3050 Ti" },
-  { id: "pytorch",      name: "PyTorch",             category: "Machine Learning", projectIds: ["sentinel-mesh","ppe-detection"], yearsUsed: 2, highlight: "Custom training pipelines, mixed precision, CUDA streams" },
-  { id: "llama-cpp",    name: "llama-cpp-python",    category: "Machine Learning", projectIds: ["sentinel-mesh","ghost-admin"], yearsUsed: 1, highlight: "Local GGUF inference, Qwen2.5-1.5B Q4_K_M at production latency" },
-  { id: "ollama",       name: "Ollama",              category: "Machine Learning", projectIds: ["ghost-admin","invoice-poc"], yearsUsed: 1, highlight: "Local LLM inference — llama3.2:3b for reasoning, Qwen2.5 for extraction" },
-  { id: "flask",        name: "Flask",               category: "Backend",          projectIds: ["ecommerce","pocket-lawyer"], yearsUsed: 2, highlight: "Full-stack Python/Flask with REST APIs and template rendering" },
-  { id: "fastapi",      name: "FastAPI",             category: "Backend",          projectIds: ["sentinel-mesh","aura","invoice-poc"], yearsUsed: 1, highlight: "Async server for real-time event ingestion and REST APIs" },
-  { id: "redis",        name: "Redis",               category: "Backend",          projectIds: ["aura"], yearsUsed: 1, highlight: "Sub-millisecond session state for live RADIUS event streams" },
-  { id: "postgresql",   name: "PostgreSQL",          category: "Backend",          projectIds: ["aura"], yearsUsed: 1, highlight: "ACID-compliant attendance records with relational schedule joins" },
-  { id: "react",        name: "React",               category: "Backend",          projectIds: ["sentinel-mesh","aura","ecommerce"], yearsUsed: 1, highlight: "Leaflet.js dashboard with WebSocket real-time marker updates" },
-  { id: "sqlite",       name: "SQLite",              category: "Backend",          projectIds: ["upwork-pipeline","ecommerce","invoice-poc"], yearsUsed: 2, highlight: "Lightweight persistent dedup and feedback storage" },
-  { id: "docker",       name: "Docker / Compose",    category: "Systems & Infra",  projectIds: ["aura"], yearsUsed: 1, highlight: "Single-command reproducible demo environment for full microservice stack" },
-  { id: "fish-shell",   name: "Fish / Bash Shell",   category: "Systems & Infra",  projectIds: ["ghost-admin","upwork-pipeline"], yearsUsed: 2, highlight: "Scripted automation and system tooling on Garuda Linux / Arch" },
-  { id: "linux",        name: "Arch Linux / Garuda", category: "Systems & Infra",  projectIds: ["sentinel-mesh","ghost-admin"], yearsUsed: 3, highlight: "Primary development environment; deep kernel and driver familiarity" },
-  { id: "android",      name: "Android",             category: "Mobile",           projectIds: ["pocket-lawyer"], yearsUsed: 1, highlight: "Edge AI app with local LLM inference on-device" },
+  { id: "python",         name: "Python",            category: "Languages",        projectIds: ["invoice-poc","cramiq","hyron-ai","aura","sentinel-mesh","ghost-admin"], yearsUsed: 3, highlight: "Main language for every backend and AI project" },
+  { id: "fastapi",        name: "FastAPI",           category: "Backend",          projectIds: ["invoice-poc","cramiq","hyron-ai","aura","sentinel-mesh"], yearsUsed: 1, highlight: "REST APIs, async ingestion and file uploads" },
+  { id: "postgresql",     name: "PostgreSQL",        category: "Backend",          projectIds: ["cramiq","aura"], yearsUsed: 1, highlight: "Production database for CramIQ (Supabase); attendance records in Aura" },
+  { id: "redis",          name: "Redis",             category: "Backend",          projectIds: ["cramiq","aura"], yearsUsed: 1, highlight: "Caching in CramIQ; Redis Streams for Aura's session pipeline" },
+  { id: "sqlite",         name: "SQLite",            category: "Backend",          projectIds: ["invoice-poc"], yearsUsed: 1, highlight: "Invoice storage and result cache in InvoiceAI" },
+  { id: "react",          name: "React",             category: "Backend",          projectIds: ["hyron-ai","aura","sentinel-mesh"], yearsUsed: 1, highlight: "Dashboards, including a live Leaflet map over WebSockets" },
+  { id: "nextjs",         name: "Next.js",           category: "Tools",            projectIds: ["cramiq"], yearsUsed: 1, highlight: "CramIQ frontend on Vercel" },
+  { id: "ollama",         name: "Ollama",            category: "Machine Learning", projectIds: ["invoice-poc","ghost-admin"], yearsUsed: 1, highlight: "Local text and vision models for invoice reading" },
+  { id: "gemini",         name: "Gemini API",        category: "Machine Learning", projectIds: ["cramiq"], yearsUsed: 1, highlight: "Study material generation in CramIQ" },
+  { id: "llama-cpp",      name: "llama-cpp-python",  category: "Machine Learning", projectIds: ["sentinel-mesh"], yearsUsed: 1, highlight: "Local LLM agents for SentinelMesh's dispatch debate" },
+  { id: "networkx",       name: "NetworkX",          category: "Machine Learning", projectIds: ["hyron-ai"], yearsUsed: 1, highlight: "Dependency graphs and blast radius in Hyron AI" },
+  { id: "yolov8",         name: "YOLOv8",            category: "Vision AI",        projectIds: ["sentinel-mesh"], yearsUsed: 1, highlight: "Incident detection with confidence-based routing" },
+  { id: "opencv",         name: "OpenCV",            category: "Vision AI",        projectIds: ["sentinel-mesh"], yearsUsed: 1, highlight: "Video frame pipeline for detection" },
+  { id: "cuda",           name: "CUDA",              category: "Systems & Infra",  projectIds: ["sentinel-mesh"], yearsUsed: 1, highlight: "GPU inference for detection and local LLMs" },
+  { id: "docker",         name: "Docker / Compose",  category: "Systems & Infra",  projectIds: ["invoice-poc","aura"], yearsUsed: 1, highlight: "InvoiceAI's offline client package; Aura's full stack in one command" },
+  { id: "github-actions", name: "GitHub Actions",    category: "Tools",            projectIds: ["invoice-poc"], yearsUsed: 1, highlight: "Tests and an accuracy gate on every pull request" },
+  { id: "linux",          name: "Linux",             category: "Systems & Infra",  projectIds: ["cramiq","ghost-admin"], yearsUsed: 3, highlight: "Daily environment; sandboxed systemd services in production" },
 ]
 
 export function getSkillWithStats(skill: Skill) {

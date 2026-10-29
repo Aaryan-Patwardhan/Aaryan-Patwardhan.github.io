@@ -16,18 +16,18 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Aaryan Patwardhan — AI Systems Engineer',
-  description: 'I build systems that see, decide, and heal themselves. Computer vision, autonomous agents, and edge AI.',
+  title: 'Aaryan Patwardhan — Applied AI Systems Engineer',
+  description: 'Applied AI Systems Engineer and founder of QuantaSharp. I build AI systems that take repetitive work off people\'s plates — and show you anything they aren\'t sure about.',
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://localhost:3000'),
   openGraph: {
-    title: 'Aaryan Patwardhan — AI Systems Engineer',
-    description: 'I build systems that see, decide, and heal themselves.',
+    title: 'Aaryan Patwardhan — Applied AI Systems Engineer',
+    description: 'AI systems that take repetitive work off people\'s plates — and show you anything they aren\'t sure about.',
     images: ['/og-image.png'],
     type: 'website'
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Aaryan Patwardhan — AI Systems Engineer',
+    title: 'Aaryan Patwardhan — Applied AI Systems Engineer',
     images: ['/og-image.png']
   }
 }

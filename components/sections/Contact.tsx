@@ -33,7 +33,7 @@ export default function Contact() {
         transition={{ duration: 1.0, delay: 0.2 }}
         className="text-[var(--text-secondary)] mb-8 max-w-md"
       >
-        Available for freelance AI/ML engineering work. Response time: {resume.responseTime}.
+        Open to applied AI and backend internships, and to QuantaSharp projects. I reply within {resume.responseTime.replace('< ', '')}.
       </motion.p>
       <div className="flex flex-wrap gap-4">
         {links.map(({ href, label, primary }, i) => (

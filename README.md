@@ -1,6 +1,6 @@
 # Aaryan Patwardhan — Portfolio
 
-> **aaryan.daemonlabs.systems** · AI Systems Engineer
+> Applied AI Systems Engineer · Founder, QuantaSharp
 
 Personal portfolio site built with Next.js 15 and React 19. Features an interactive 3D neural-network canvas, ambient particle field, skill constellation graph, and smooth Framer Motion entrance animations — rendered entirely client-side with progressive enhancement for low-end devices.
 
@@ -71,7 +71,7 @@ Copy `.env.example` to `.env.local` and fill in the values:
 NEXT_PUBLIC_UMAMI_ID=your-umami-site-id
 
 # Canonical site URL (used for OpenGraph and sitemap generation)
-NEXT_PUBLIC_SITE_URL=https://aaryan.daemonlabs.systems
+NEXT_PUBLIC_SITE_URL=https://your-domain.example
 ```
 
 ---
@@ -117,7 +117,7 @@ npm run test         # Vitest unit tests
 
 ## 🌐 Deployment
 
-The site is deployed to **[aaryan.daemonlabs.systems](https://aaryan.daemonlabs.systems)** via Vercel.
+The site is deployed on Vercel.
 
 ### Deploy your own fork
 

@@ -6,7 +6,9 @@ const compat = new FlatCompat({
   baseDirectory: dirname(fileURLToPath(import.meta.url))
 })
 
-export default [
+const config = [
+  // Generated or local-only files: never lint these.
+  { ignores: [".next/**", "out/**", "node_modules/**", "next-env.d.ts", "uploadables/**"] },
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
     rules: {
@@ -16,3 +18,5 @@ export default [
     }
   }
 ]
+
+export default config
