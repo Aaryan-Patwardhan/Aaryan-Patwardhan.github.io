@@ -1,42 +1,46 @@
-'use client'
-import { motion } from 'framer-motion'
 import { resume } from '@/lib/resume'
-import TimelineItem from '@/components/ui/TimelineItem'
-import { useIntersection } from '@/hooks/useIntersection'
+import { certifications, hackathons } from '@/lib/profile'
 
 export default function Experience() {
-  const { ref, isVisible } = useIntersection(0.1)
-
   return (
-    <section id="experience" ref={ref as React.Ref<HTMLElement>} className="py-24 max-w-6xl mx-auto px-6">
-      <motion.p
-        initial={{ opacity: 0, y: 20 }} animate={isVisible ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 1.0 }}
-        className="font-mono text-xs text-[var(--accent)] tracking-widest uppercase mb-4"
-      >
-        Experience
-      </motion.p>
-      <motion.h2
-        initial={{ opacity: 0, y: 20 }} animate={isVisible ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 1.0, delay: 0.1 }}
-        className="text-2xl font-bold text-[var(--text-primary)] mb-12"
-      >
-        What I&apos;ve built
-      </motion.h2>
-      <div>
-        {resume.experience.map((item, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, x: -24 }}
-            animate={isVisible ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 1.0, delay: 0.2 + i * 0.12 }}
-          >
-            <TimelineItem
-              item={item}
-              isLast={i === resume.experience.length - 1}
-            />
-          </motion.div>
-        ))}
+    <section id="experience" aria-labelledby="experience-title" className="border-b border-line">
+      <div className="mx-auto max-w-[1160px] px-5 py-16 md:px-8 md:py-24">
+        <h2 id="experience-title" className="text-3xl font-semibold tracking-tight md:text-4xl">Experience</h2>
+        <ol className="mt-10 divide-y divide-line border-y border-line">
+          {resume.experience.map((e) => (
+            <li key={e.role + e.org} className="grid gap-4 py-8 md:grid-cols-[240px_1fr] md:gap-12">
+              <div>
+                <p className="font-semibold">{e.org}</p>
+                <p className="text-sm text-muted">{e.period}</p>
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold">{e.role}</h3>
+                <ul className="mt-3 space-y-2 text-muted">
+                  {e.bullets.map((b) => (
+                    <li key={b} className="flex gap-3"><span aria-hidden className="mt-[0.65em] h-1.5 w-1.5 shrink-0 rounded-full bg-accent" /><span>{b}</span></li>
+                  ))}
+                </ul>
+              </div>
+            </li>
+          ))}
+        </ol>
+
+        <div className="mt-12 grid gap-10 md:grid-cols-3">
+          <div>
+            <h3 className="font-semibold">Education</h3>
+            {resume.education.map((e) => (
+              <p key={e.degree} className="mt-3 text-muted"><span className="text-ink">{e.degree}</span><br />{e.institution}<br /><span className="text-sm">{e.period}</span></p>
+            ))}
+          </div>
+          <div>
+            <h3 className="font-semibold">Hackathons</h3>
+            <ul className="mt-3 space-y-2 text-muted">{hackathons.map((h) => <li key={h}>{h}</li>)}</ul>
+          </div>
+          <div>
+            <h3 className="font-semibold">Certifications</h3>
+            <ul className="mt-3 space-y-2 text-muted">{certifications.map((c) => <li key={c}>{c}</li>)}</ul>
+          </div>
+        </div>
       </div>
     </section>
   )

@@ -6,6 +6,14 @@ import type { ProjectMeta } from '@/types'
 export const projects: ProjectMeta[] = [
   {
     id: "invoice-poc",
+    stage: "Pilot-ready · v3.4",
+    pipeline: [
+      { label: "PDF, scan or photo", kind: "input" },
+      { label: "Local LLM reads it", kind: "ai" },
+      { label: "Rules check GSTIN, totals, tax", kind: "rule" },
+      { label: "Doubts go to a person", kind: "human" },
+      { label: "Saved · Excel export", kind: "store" }
+    ],
     slug: "invoice-poc",
     version: "3.3",
     status: "published",
@@ -13,7 +21,7 @@ export const projects: ProjectMeta[] = [
     title: "InvoiceAI",
     tagline: "Reads Indian GST invoices — digital PDFs, scans and phone photos — checks its own work, and marks anything doubtful for a person to review.",
     tags: ["Automation", "Backend", "Vision AI"],
-    metrics: ["121 automated tests", "Accuracy gate in CI", "GSTIN check-digit validation", "Offline Docker package"],
+    metrics: ["83% field accuracy, 0 invented values (11 sample docs)", "136 automated tests", "Accuracy gate in CI", "Commercially licensed models only"],
     techStackIds: ["python", "fastapi", "ollama", "sqlite", "docker", "github-actions"],
     featured: true,
     coverImage: "/projects/invoice-poc/cover.webp",
@@ -21,7 +29,7 @@ export const projects: ProjectMeta[] = [
       problem: "Accounting teams in India type GST invoice details — GSTINs, dates, tax splits and totals — into Tally by hand, hundreds of times a month. AI can read invoices, but small local models make mistakes, and a wrong value that looks complete is worse than no value at all.",
       approach: "The AI reads; deterministic rules check the result; every doubt is shown. Text PDFs go through a text model, scans and photos through a vision model, both running locally via Ollama. A verification layer then checks what the model returned before anything is saved.",
       architecture: "FastAPI service with SQLite storage. Verification layer: GSTIN check-digit validation with OCR repair (a repaired GSTIN is accepted only when its checksum passes), totals and CGST/SGST cross-checks, item amount checks (quantity × rate), PAN checks, and seller/buyer correction from text positions in the PDF. A labelled golden set is evaluated in GitHub Actions, so a model or prompt change that lowers accuracy cannot be merged. Shipped as an offline Docker package with Windows and Linux installers; the dashboard is designed for non-technical and older users.",
-      results: "On 6 synthetic and public sample invoices: 75% field accuracy and 0 invented values (up from 67% and 2). That set is too small to quote to clients — measurement on 20–30 real invoices is next. Coming next: a review screen for flagged fields and Tally / Zoho Books export. Private commercial product — demo on request.",
+      results: "On 11 synthetic and public sample documents (digital PDFs, scans, a photo; CPU only): 83% field accuracy and 0 invented values — up from 67% with 2 invented values in the first measured version. Only commercially licensed AI models are used, enforced by a test. The sample set is too small to quote to clients — measurement on 20–30 real invoices is next. Coming next: a review screen for flagged fields and Tally / Zoho Books export. Private commercial product — demo on request.",
       diagrams: [
         { path: "/projects/invoice-poc/result-complete.webp", caption: "Main details found — marked “Looks complete” (sample invoice)", type: "screenshot" },
         { path: "/projects/invoice-poc/cover.webp", caption: "Problems found — marked “Please check this” (sample invoice)", type: "screenshot" },
@@ -31,6 +39,14 @@ export const projects: ProjectMeta[] = [
   },
   {
     id: "cramiq",
+    stage: "Live",
+    pipeline: [
+      { label: "Next.js app", kind: "input" },
+      { label: "FastAPI, sandboxed VM", kind: "service" },
+      { label: "PostgreSQL + Redis", kind: "store" },
+      { label: "Gemini study material", kind: "ai" },
+      { label: "Daily briefing email", kind: "output" }
+    ],
     slug: "cramiq",
     version: "1.0",
     status: "published",
@@ -38,7 +54,7 @@ export const projects: ProjectMeta[] = [
     title: "CramIQ",
     tagline: "Exam preparation for SPPU engineering students: a study planner, a study vault, progress streaks and a daily briefing email.",
     tags: ["Full-Stack", "Backend"],
-    metrics: ["Live for students", "FastAPI + PostgreSQL", "Next.js on Vercel", "Sandboxed production service"],
+    metrics: ["Live for students", "Sandboxed service (systemd exposure 1.3)", "Deploys roll back on failure", "Nightly briefing emails"],
     techStackIds: ["python", "fastapi", "postgresql", "redis", "nextjs", "gemini", "linux"],
     featured: true,
     coverImage: "/projects/cramiq/cover.webp",
@@ -53,6 +69,14 @@ export const projects: ProjectMeta[] = [
   },
   {
     id: "hyron-ai",
+    stage: "Hackathon · team lead",
+    pipeline: [
+      { label: "npm lockfiles", kind: "input" },
+      { label: "Dependency graph", kind: "service" },
+      { label: "OSV + EPSS + CISA KEV", kind: "rule" },
+      { label: "Explainable risk score", kind: "rule" },
+      { label: "Upgrade plan: auto / review / block", kind: "human" }
+    ],
     slug: "hyron-ai",
     version: "1.0",
     status: "published",
@@ -77,6 +101,14 @@ export const projects: ProjectMeta[] = [
   },
   {
     id: "aura",
+    stage: "Prototype",
+    pipeline: [
+      { label: "Wi-Fi events (simulator)", kind: "input" },
+      { label: "FastAPI ingestion", kind: "service" },
+      { label: "Redis Streams", kind: "store" },
+      { label: "Attendance rule + Isolation Forest", kind: "ai" },
+      { label: "PostgreSQL + dashboard", kind: "output" }
+    ],
     slug: "aura",
     version: "1.0",
     status: "published",
@@ -101,6 +133,14 @@ export const projects: ProjectMeta[] = [
   },
   {
     id: "sentinel-mesh",
+    stage: "Hackathon · AI core lead",
+    pipeline: [
+      { label: "Recorded video", kind: "input" },
+      { label: "YOLOv8 detection", kind: "ai" },
+      { label: "Confidence gate", kind: "rule" },
+      { label: "Two LLM agents debate", kind: "ai" },
+      { label: "Dispatch on a simulated fleet", kind: "output" }
+    ],
     slug: "sentinel-mesh",
     version: "1.0",
     status: "published",
@@ -122,6 +162,14 @@ export const projects: ProjectMeta[] = [
   },
   {
     id: "ghost-admin",
+    stage: "Prototype · in progress",
+    pipeline: [
+      { label: "RAM trend detection", kind: "input" },
+      { label: "Whitelist + baseline", kind: "rule" },
+      { label: "Local LLM classifies", kind: "ai", broken: true },
+      { label: "Graduated remediation", kind: "output" },
+      { label: "JSONL audit log", kind: "store" }
+    ],
     slug: "ghost-admin",
     version: "0.1",
     status: "wip",

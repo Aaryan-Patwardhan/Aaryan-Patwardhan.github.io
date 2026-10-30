@@ -2,9 +2,9 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import BackLink from '@/components/ui/BackLink'
-import MetricBadge from '@/components/ui/MetricBadge'
-import { getProjectBySlug, getAllSlugs, getRelatedProjects } from '@/lib/utils/project-queries'
+import { getProjectBySlug, getAllSlugs } from '@/lib/utils/project-queries'
+import SystemDiagram, { DiagramKey } from '@/components/SystemDiagram'
+import { StagePill } from '@/components/sections/Work'
 
 interface Props { params: Promise<{ slug: string }> }
 
@@ -16,101 +16,51 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params
-  const project = getProjectBySlug(slug)
-  if (!project) return { title: 'Not Found' }
-  return {
-    title: `${project.title} — Aaryan Patwardhan`,
-    description: project.tagline,
-    openGraph: {
-      title: project.title,
-      description: project.caseStudy.results,
-      images: [`/projects/${slug}/og.png`]
-    }
-  }
+  const p = getProjectBySlug((await params).slug)
+  if (!p) return { title: 'Not Found' }
+  return { title: `${p.title} — Aaryan Patwardhan`, description: p.tagline, openGraph: { title: p.title, description: p.caseStudy.results, images: [`/projects/${p.slug}/og.png`] } }
 }
 
+const link = 'inline-flex min-h-12 items-center font-semibold underline decoration-line underline-offset-4 hover:decoration-ink'
+
 export default async function CaseStudyPage({ params }: Props) {
-  const { slug } = await params
-  const project = getProjectBySlug(slug)
-  if (!project) notFound()
-
-  const related = getRelatedProjects(slug, 2)
-
+  const p = getProjectBySlug((await params).slug)
+  if (!p) notFound()
+  const blocks = [['The problem', p.caseStudy.problem], ['Approach', p.caseStudy.approach], ['Architecture', p.caseStudy.architecture], ['Results and limits', p.caseStudy.results]]
   return (
-    <div className="min-h-screen bg-[var(--bg)]">
-      <div className="max-w-3xl mx-auto px-6 py-16">
-        <BackLink />
-
-        <div className="mt-10 mb-12">
-          <div className="flex flex-wrap gap-2 mb-4">
-            {project.tags.map(t => (
-              <span key={t} className="text-xs font-mono text-[var(--accent-dim)] uppercase tracking-wider">{t}</span>
-            ))}
-          </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-[var(--text-primary)] mb-3">{project.title}</h1>
-          <p className="text-lg text-[var(--text-secondary)]">{project.tagline}</p>
-          <div className="flex flex-wrap gap-2 mt-4">
-            {project.metrics.map(m => <MetricBadge key={m} label={m} />)}
-          </div>
-          <div className="flex gap-4 mt-6">
-            {project.caseStudy.githubUrl && (
-              <a href={project.caseStudy.githubUrl} target="_blank" rel="noopener noreferrer" className="text-sm font-mono text-[var(--accent)] hover:underline underline-offset-2">GitHub ↗</a>
-            )}
-            {project.caseStudy.demoUrl && (
-              <a href={project.caseStudy.demoUrl} target="_blank" rel="noopener noreferrer" className="text-sm font-mono text-[var(--accent)] hover:underline underline-offset-2">Demo ↗</a>
-            )}
-            {project.caseStudy.liveUrl && (
-              <a href={project.caseStudy.liveUrl} target="_blank" rel="noopener noreferrer" className="text-sm font-mono text-[var(--accent)] hover:underline underline-offset-2">Live site ↗</a>
-            )}
-            {!project.caseStudy.githubUrl && !project.caseStudy.liveUrl && !project.caseStudy.demoUrl && (
-              <span className="text-sm font-mono text-[var(--text-dim)]">Code is private — demo on request</span>
-            )}
-          </div>
-        </div>
-
-        {[
-          { label: 'The Problem', content: project.caseStudy.problem },
-          { label: 'Approach',    content: project.caseStudy.approach },
-          { label: 'Architecture', content: project.caseStudy.architecture },
-          { label: 'Results',     content: project.caseStudy.results }
-        ].map(({ label, content }) => (
-          <div key={label} className="mb-10">
-            <h2 className="text-xs font-mono text-[var(--text-dim)] uppercase tracking-widest mb-3">{label}</h2>
-            <p className="text-[var(--text-secondary)] leading-relaxed">{content}</p>
-          </div>
-        ))}
-
-        {project.caseStudy.diagrams.length > 0 && (
-          <div className="space-y-6 mb-12">
-            {project.caseStudy.diagrams.map((d, i) => (
-              <figure key={i}>
-                <div className="relative w-full aspect-video rounded-lg overflow-hidden border border-[var(--border)] bg-[var(--surface)]" style={{ position: 'relative' }}>
-                  <Image src={d.path} alt={d.caption} fill className="object-contain" />
-                </div>
-                <figcaption className="text-xs font-mono text-[var(--text-dim)] mt-2 text-center">{d.caption}</figcaption>
-              </figure>
-            ))}
-          </div>
-        )}
-
-        {related.length > 0 && (
-          <div className="border-t border-[var(--border)] pt-10">
-            <p className="text-xs font-mono text-[var(--text-dim)] uppercase tracking-widest mb-5">Related</p>
-            <div className="flex flex-col gap-3">
-              {related.map(r => (
-                <Link key={r.id} href={`/projects/${r.slug}`} className="group flex items-center justify-between p-4 rounded-lg border border-[var(--border)] hover:border-[var(--accent-dim)] transition-colors">
-                  <div>
-                    <p className="text-sm font-medium text-[var(--text-primary)]">{r.title}</p>
-                    <p className="text-xs text-[var(--text-secondary)] mt-0.5">{r.tagline}</p>
-                  </div>
-                  <span className="text-[var(--text-dim)] group-hover:text-[var(--accent)] transition-colors">→</span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
+    <article className="mx-auto max-w-[1160px] px-5 py-14 md:px-8 md:py-20">
+      <Link href="/#work" className={link}>← All work</Link>
+      <div className="mt-8 flex flex-wrap items-center gap-3"><StagePill stage={p.stage} /><span className="text-sm text-muted">{p.tags.join(' · ')}</span></div>
+      <h1 className="mt-4 text-4xl font-semibold tracking-tight md:text-6xl">{p.title}</h1>
+      <p className="mt-4 max-w-[60ch] text-xl text-muted">{p.tagline}</p>
+      <div className="mt-6 flex flex-wrap gap-x-6">
+        {p.caseStudy.liveUrl && <a href={p.caseStudy.liveUrl} target="_blank" rel="noopener noreferrer" className={link}>Live site</a>}
+        {p.caseStudy.githubUrl && <a href={p.caseStudy.githubUrl} target="_blank" rel="noopener noreferrer" className={link}>Code</a>}
+        {!p.caseStudy.githubUrl && !p.caseStudy.liveUrl && <span className="inline-flex min-h-12 items-center text-muted">Code is private — demo on request</span>}
       </div>
-    </div>
+      <figure className="mt-12 rounded-[8px] border border-line bg-surface p-5 md:p-7">
+        <figcaption className="mb-5 flex flex-wrap items-baseline justify-between gap-3"><span className="font-semibold">Pipeline</span><DiagramKey /></figcaption>
+        <SystemDiagram steps={p.pipeline} size="lg" label={`${p.title} pipeline`} />
+      </figure>
+      <ul className="mt-8 flex flex-wrap gap-2">{p.metrics.map(m => <li key={m} className="rounded-[6px] bg-surface px-3 py-1.5 text-sm">{m}</li>)}</ul>
+      <div className="mt-12 space-y-10">
+        {blocks.map(([t, b]) => (
+          <section key={t} className="grid gap-3 md:grid-cols-[220px_1fr] md:gap-12">
+            <h2 className="text-lg font-semibold">{t}</h2>
+            <p className="max-w-[70ch] text-muted">{b}</p>
+          </section>
+        ))}
+      </div>
+      {p.caseStudy.diagrams.length > 0 && (
+        <div className="mt-14 grid gap-8 md:grid-cols-2">
+          {p.caseStudy.diagrams.map(d => (
+            <figure key={d.path}>
+              <div className="overflow-hidden rounded-[6px] border border-line"><Image src={d.path} alt={d.caption} width={1200} height={750} sizes="(min-width: 768px) 560px, 100vw" className="h-auto w-full" /></div>
+              <figcaption className="mt-2 text-sm text-muted">{d.caption}</figcaption>
+            </figure>
+          ))}
+        </div>
+      )}
+    </article>
   )
 }

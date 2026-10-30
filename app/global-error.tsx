@@ -1,12 +1,12 @@
 'use client'
 export default function GlobalError({ reset }: { error: Error; reset: () => void }) {
   return (
-    <html>
-      <body style={{ background: '#050a0f', color: '#e8f4f8', fontFamily: 'monospace', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+    <html lang="en">
+      <body style={{ background: '#F4F6F9', color: '#0B1220', fontFamily: 'system-ui, sans-serif', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
         <div style={{ textAlign: 'center' }}>
-          <p style={{ color: '#5a8a99', marginBottom: '16px' }}>Root system fault.</p>
-          <button onClick={reset} style={{ color: '#00d4ff', cursor: 'pointer', background: 'none', border: 'none', fontSize: '14px', textDecoration: 'underline' }}>
-            Reinitialize
+          <p style={{ fontSize: '20px', fontWeight: 600, marginBottom: '16px' }}>Something went wrong loading this page.</p>
+          <button onClick={reset} style={{ minHeight: '48px', padding: '0 20px', border: '1.5px solid #0B1220', borderRadius: '6px', background: 'transparent', fontWeight: 600, cursor: 'pointer' }}>
+            Try again
           </button>
         </div>
       </body>
