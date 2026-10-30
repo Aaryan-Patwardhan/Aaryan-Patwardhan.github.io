@@ -15,3 +15,6 @@ yarn-error.log*
 .antigravity/
 .gradio/
 output.txt
+.env
+.env.*
+config.json

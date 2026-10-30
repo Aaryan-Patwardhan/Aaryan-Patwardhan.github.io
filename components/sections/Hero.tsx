@@ -1,77 +1,42 @@
-'use client'
-import { Suspense } from 'react'
-import dynamic from 'next/dynamic'
-import { motion } from 'framer-motion'
 import { resume } from '@/lib/resume'
-import { useDeviceTier } from '@/hooks/useDeviceTier'
-import NeuralNetworkFallback from '@/components/canvas/NeuralNetworkFallback'
-import SceneLoader from '@/components/canvas/SceneLoader'
-const AmbientBackground = dynamic(() => import('@/components/canvas/AmbientBackground'), { ssr: false })
-const Scene = dynamic(() => import('@/components/canvas/Scene'), { ssr: false })
+import { site } from '@/lib/profile'
+import SystemDiagram, { DiagramKey } from '@/components/SystemDiagram'
+
+// The pattern every system on this page follows.
+const pattern = [
+  { label: 'Documents and data', kind: 'input' as const },
+  { label: 'AI reads and proposes', kind: 'ai' as const },
+  { label: 'Rules verify the result', kind: 'rule' as const },
+  { label: 'Doubts go to a person', kind: 'human' as const },
+  { label: 'Saved, sent or acted on', kind: 'output' as const },
+]
+
+const btn = 'inline-flex min-h-12 items-center justify-center rounded-[6px] px-5 text-base font-semibold transition-colors'
 
 export default function Hero() {
-  const tier = useDeviceTier()
-
   return (
-    <section id="hero" className="relative min-h-screen flex items-center overflow-hidden">
-      {/* Ambient particle field — always visible, behind everything */}
-      <div className="absolute inset-0">
-        <AmbientBackground />
-      </div>
-      {/* 3D neural network or fallback */}
-      <div className="absolute inset-0">
-        {tier === 'low' ? (
-          <NeuralNetworkFallback />
-        ) : (
-          <Suspense fallback={<SceneLoader />}>
-            <Scene tier={tier} />
-          </Suspense>
-        )}
-      </div>
+    <section aria-labelledby="hero-title" className="drawing-grid border-b border-line">
+      <div className="mx-auto max-w-[1160px] px-5 pb-16 pt-16 md:px-8 md:pb-24 md:pt-24">
+        <p className="text-[15px] text-muted">{resume.title} · {resume.location}</p>
+        <h1 id="hero-title" className="mt-4 max-w-[16ch] text-[2.6rem] font-semibold leading-[1.05] tracking-[-0.025em] sm:text-6xl lg:text-7xl">
+          I build AI systems that check their own work.
+        </h1>
+        <p className="mt-7 max-w-[56ch] text-lg text-muted md:text-xl">
+          I&apos;m Aaryan Patwardhan. The AI does the reading, fixed rules check the result, and anything uncertain goes to a person — tested, measured and shipped to real users.
+        </p>
+        <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+          <a href="#work" className={`${btn} bg-accent text-surface hover:opacity-90`}>See my work</a>
+          <a href={site.resume} className={`${btn} border-[1.5px] border-ink hover:bg-ink hover:text-bg`}>Resume (PDF)</a>
+          <a href={`mailto:${resume.email}`} className={`${btn} text-ink underline decoration-line underline-offset-4 hover:decoration-ink`}>{resume.email}</a>
+        </div>
 
-      <div className="absolute inset-0 bg-gradient-to-r from-[var(--bg)] via-[var(--bg)]/60 to-transparent pointer-events-none" />
-
-      <div className="relative z-10 max-w-6xl mx-auto px-6 w-full">
-        {/* LCP-critical text: visible on first paint, animates after hydration */}
-        <motion.div
-          initial={{ opacity: 1, y: 0 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0 }}
-        >
-          <p className="font-mono text-xs text-[var(--accent)] tracking-widest mb-4 uppercase">
-            {resume.title}
-          </p>
-          <h1 className="text-4xl md:text-6xl font-bold text-[var(--text-primary)] leading-tight mb-4">
-            {resume.name}
-          </h1>
-          <p className="text-lg text-[var(--text-secondary)] max-w-md leading-relaxed mb-8">
-            {resume.tagline}
-          </p>
-          <div className="flex gap-4">
-            <a
-              href="#projects"
-              className="px-5 py-2.5 bg-[var(--accent)] text-[var(--bg)] text-sm font-mono rounded hover:bg-[var(--accent-glow)] transition-colors"
-            >
-              View Projects
-            </a>
-            <a
-              href={resume.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-5 py-2.5 border border-[var(--border)] text-[var(--text-secondary)] text-sm font-mono rounded hover:border-[var(--accent-dim)] hover:text-[var(--text-primary)] transition-colors"
-            >
-              GitHub ↗
-            </a>
-          </div>
-        </motion.div>
-      </div>
-
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ repeat: Infinity, duration: 2 }}
-          className="w-px h-10 bg-gradient-to-b from-[var(--accent)] to-transparent mx-auto"
-        />
+        <figure className="mt-16 rounded-[8px] border border-line bg-bg/80 p-5 backdrop-blur md:p-7">
+          <figcaption className="mb-5 flex flex-wrap items-baseline justify-between gap-3">
+            <span className="font-semibold">How my systems work</span>
+            <DiagramKey />
+          </figcaption>
+          <SystemDiagram steps={pattern} size="lg" label="How my systems work: documents and data, AI reads and proposes, rules verify, doubts go to a person, then saved or acted on" />
+        </figure>
       </div>
     </section>
   )

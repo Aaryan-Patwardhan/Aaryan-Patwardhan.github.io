@@ -19,8 +19,20 @@ export type DiagramAsset = {
   type: 'screenshot' | 'architecture' | 'flowchart' | 'demo-gif'
 }
 
+/** One step of a project's real pipeline, drawn as a system diagram. */
+export type PipelineStep = {
+  label: string
+  /** input · ai (a model) · rule (deterministic check) · human · store · service · output */
+  kind: 'input' | 'ai' | 'rule' | 'human' | 'store' | 'service' | 'output'
+  /** Marks a step that doesn't work yet (shown honestly). */
+  broken?: boolean
+}
+
 export type ProjectMeta = {
   id: string
+  /** Honest stage shown on the card, e.g. "Live", "Hackathon · team lead". */
+  stage: string
+  pipeline: PipelineStep[]
   slug: string
   version: string
   status: ProjectStatus
@@ -96,36 +108,3 @@ export type ResumeData = {
   experience: ExperienceItem[]
   education: EducationItem[]
 }
-
-// ── Neural Network Types ───────────────────────────────────────────────────
-
-export type Node3D = {
-  id: number
-  position: [number, number, number]
-  origin: [number, number, number]  // original position for lerp-back
-}
-
-export type Edge3D = {
-  from: number
-  to: number
-}
-
-// ── Terminal Types ─────────────────────────────────────────────────────────
-
-export type LogLineType = 'command' | 'output' | 'error' | 'success' | 'dim'
-
-export type LogLine = {
-  text: string
-  type: LogLineType
-  delay?: number   // ms per character (default 40)
-}
-
-export type TerminalSession = {
-  projectId: string
-  title: string
-  lines: LogLine[]
-}
-
-// ── Device Tier ────────────────────────────────────────────────────────────
-
-export type DeviceTier = 'high' | 'mid' | 'low'

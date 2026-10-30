@@ -23,7 +23,7 @@ export const resume: ResumeData = {
       bullets: [
         "Built InvoiceAI, which reads Indian GST invoices (digital PDFs, scans and phone photos) with local LLMs via Ollama behind a FastAPI service with SQLite storage.",
         "Designed a deterministic verification layer: GSTIN check-digit validation with OCR repair that is accepted only when the checksum passes, totals and CGST/SGST cross-checks, and seller/buyer correction from PDF text positions. Every doubtful field is flagged for review.",
-        "Wrote 121 automated tests and a labelled golden-set accuracy gate in GitHub Actions, so a model or prompt change that lowers accuracy cannot be merged.",
+        "Wrote 136 automated tests and a labelled golden-set accuracy gate in GitHub Actions, so a model or prompt change that lowers accuracy cannot be merged; 83% field accuracy with 0 invented values on 11 sample documents.",
         "Shipped it as an offline Docker package with Windows and Linux installers, and designed the dashboard for non-technical and older users."
       ]
     },
